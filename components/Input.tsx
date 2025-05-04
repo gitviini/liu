@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, TextStyle, View, ViewStyle } from "react-native";
-import COLORS from "../static/colors";
-import CONSTANTS from "../static/constants";
+import COLORS from "../../contants/colors";
+import CONSTANTS from "../../contants/constants";
 
 export default function Input({ onChangeText, value, placeholder, maxLength, secureTextEntry, styleInput, styleView }: { onChangeText?: ((text: string) => void), value?: string, placeholder?: string, maxLength?: number, secureTextEntry?: boolean, styleInput?: TextStyle, styleView?: ViewStyle }) {
     return (

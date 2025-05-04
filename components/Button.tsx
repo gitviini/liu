@@ -1,8 +1,8 @@
 import { Href, useRouter } from "expo-router";
 import { ReactNode } from "react";
 import { GestureResponderEvent, Pressable, StyleSheet, Text } from "react-native";
-import COLORS from "../static/colors";
-import CONSTANTS from "../static/constants";
+import COLORS from "@/contants/colors";
+import CONSTANTS from "@/contants/constants";
 
 export default function Button({ children, href, onPress}: { children?: ReactNode, href?:Href, onPress?: ((event: GestureResponderEvent) => void) | null | undefined }) {
     const router = useRouter()

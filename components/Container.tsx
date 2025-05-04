@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { StatusBar, StyleSheet, View, ViewStyle } from "react-native"
-import COLORS from "../static/colors"
-import CONSTANTS from "../static/constants"
+import COLORS from "@/contants/colors"
+import CONSTANTS from "@/contants/constants"
 
 export default function Container({ children, style }: { children?: ReactNode, style?: ViewStyle }) {
     return (

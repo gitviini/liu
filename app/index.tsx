@@ -1,8 +1,9 @@
-import Button from "@/assets/components/Button"
-import Container from "@/assets/components/Container"
+import { View, Text, StyleSheet } from "react-native"
+import Button from "@/components/Button"
+import Container from "@/components/Container"
 
-export default function App(){
-  return(
+export default function App() {
+  return (
     <Container>
       <Button href={"/(autentication)/login"}>
         Login
@@ -13,3 +14,6 @@ export default function App(){
     </Container>
   )
 }
+
+const styles = StyleSheet.create({
+})

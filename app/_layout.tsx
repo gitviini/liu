@@ -1,4 +1,4 @@
-import COLORS from "@/assets/static/colors";
+import COLORS from "@/contants/colors";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
