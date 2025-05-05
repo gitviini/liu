@@ -1,15 +1,28 @@
-import COLORS from "@/contants/colors";
-import { Stack } from "expo-router";
+import { ClerkProvider } from '@clerk/clerk-expo'
+import { tokenCache } from '@clerk/clerk-expo/token-cache'
+import { useAuth } from '@clerk/clerk-expo'
+import { Slot, useRouter } from 'expo-router'
+import { useEffect } from 'react'
+
+function Verify() {
+  const { isLoaded, isSignedIn } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoaded) return
+
+    console.log("User: ", isSignedIn)
+
+    isSignedIn ? router.replace("/(public)") : router.replace("/(auth)/login")
+  }, [isSignedIn])
+  return <Slot />
+}
 
 export default function RootLayout() {
-  return <Stack screenOptions={{ 
-    headerShadowVisible: false, 
-    headerTintColor: COLORS.foreground, 
-    headerStyle: { backgroundColor: COLORS.background }, 
-  }}>
-    <Stack.Screen name="index" options={{headerShown: false}} />
-    <Stack.Screen name="(autentication)/login" options={{title:"Entrar"}} />
-    <Stack.Screen name="(autentication)/signup" options={{title:"Cadastrar"}} />
-    <Stack.Screen name="(home)/index" options={{headerShown: false}} />
-  </Stack>
+
+  return (
+    <ClerkProvider tokenCache={tokenCache}>
+      < Verify />
+    </ClerkProvider>
+  )
 }

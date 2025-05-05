@@ -1,19 +1,12 @@
-import { View, Text, StyleSheet } from "react-native"
-import Button from "@/components/Button"
+import { ActivityIndicator } from "react-native"
 import Container from "@/components/Container"
+import CONSTANTS from "@/contants/constants"
+import COLORS from "@/contants/colors"
 
-export default function App() {
+export default function Index() {
   return (
     <Container>
-      <Button href={"/(autentication)/login"}>
-        Login
-      </Button>
-      <Button href={"/(autentication)/signup"}>
-        Cadastrar
-      </Button>
+      <ActivityIndicator size={CONSTANTS.fontLarge} color={COLORS.foreground}/>
     </Container>
   )
 }
-
-const styles = StyleSheet.create({
-})

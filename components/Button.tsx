@@ -20,7 +20,7 @@ export default function Button({ children, href, onPress}: { children?: ReactNod
 
 const styles = StyleSheet.create({
     button: {
-        width: "80%",
+        width: "100%",
         maxWidth: CONSTANTS.maxWidth,
         padding: CONSTANTS.paddingMedium,
         backgroundColor: COLORS.green,
