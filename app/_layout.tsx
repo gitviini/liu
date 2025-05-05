@@ -10,6 +10,6 @@ export default function RootLayout() {
     <Stack.Screen name="index" options={{headerShown: false}} />
     <Stack.Screen name="(autentication)/login" options={{title:"Entrar"}} />
     <Stack.Screen name="(autentication)/signup" options={{title:"Cadastrar"}} />
-    <Stack.Screen name="(home)" options={{headerShown: false}} />
+    <Stack.Screen name="(home)/index" options={{headerShown: false}} />
   </Stack>
 }
