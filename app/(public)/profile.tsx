@@ -3,8 +3,8 @@ import { useRouter } from 'expo-router'
 import { View, Text, StyleSheet } from "react-native"
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 import { stylePattern } from '@/contants/stylePattern';
 import { ConnectedUserType } from '@/types/ConnectedUserType';
 import Container from "@/components/Container";
@@ -26,8 +26,9 @@ const connectedUserList: Array<ConnectedUserType> = [
 ]
 
 export default function Profile() {
-    const [userName, setUserName] = useState<string>("User Name")
-    const [userCode, setUserCode] = useState<string>("User code")
+    const [userName, setUserName] = useState<string>("Vinicius Gabriel")
+    const [userType, setUserType] = useState<string>("Paciente")
+    const [userCode, setUserCode] = useState<string>("123ABCFFF")
 
     const router = useRouter()
     // Use `useClerk()` to access the `signOut()` function
@@ -51,7 +52,7 @@ export default function Profile() {
                     <Image
                         placeholder={{ blurhash }}
                         style={styles.userImage}
-                        source={"https://picsum.photos/id/64/100/100"}
+                        source={"https://picsum.photos/id/103/100/100"}
                         contentFit='cover'
                         transition={1000}
                     />
@@ -62,6 +63,26 @@ export default function Profile() {
                         Nome de usuário
                     </Text>
                     <Input onChangeText={setUserName} value={userName} />
+                    <Text style={stylePattern.subTitle}>
+                        Tipo de usuário
+                    </Text>
+                    <View style={{
+                            backgroundColor: COLORS.white,
+                            boxShadow: CONSTANTS.boxShadow,
+                            borderRadius: CONSTANTS.borderRadiusLarge,
+                            height: 41.5,
+                            justifyContent: "center",
+                            overflow: "hidden",
+                        }}>
+                        <Picker
+                            selectedValue={userType}
+                            onValueChange={(value, index) =>
+                                setUserType(value)
+                            }>
+                            <Picker.Item label="Paciente" value="Paciente" />
+                            <Picker.Item label="Colaborador" value="Colaborador" />
+                        </Picker>
+                    </View>
                     <Text style={stylePattern.subTitle}>
                         Código de compartilhamento
                     </Text>
@@ -83,6 +104,9 @@ export default function Profile() {
                     <Text style={stylePattern.subTitle}>
                         <Ionicons name={'cog'} /> Opções da conta
                     </Text>
+                    <Button>
+                        Salvar alterações
+                    </Button>
                     <Button styleButton={styles.logoutAccountButton} styleTextButton={styles.logoutAccountTextButton} onPress={handleSignOut}>
                         Desconectar conta
                     </Button>

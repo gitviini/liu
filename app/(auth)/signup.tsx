@@ -2,6 +2,7 @@ import { View, Text, ActivityIndicator } from 'react-native'
 import { useState } from 'react'
 import { useSignUp } from '@clerk/clerk-expo'
 import { Link, useRouter } from 'expo-router'
+import { Picker } from '@react-native-picker/picker';
 import Container from "@/components/Container"
 import Input from "@/components/Input"
 import Button from "@/components/Button"
@@ -15,6 +16,7 @@ export default function Signup() {
 
     const [userName, setUserName] = useState<string>("")
     const [userEmail, setUserEmail] = useState<string>("")
+    const [userType, setUserType] = useState<string>("Paciente")
     const [userPassword, setUserPassword] = useState<string>("")
     const [pendingVerification, setPendingVerification] = useState<boolean>(false)
     const [confirmCode, setConfirmCode] = useState<string>("")
@@ -28,6 +30,7 @@ export default function Signup() {
         try {
             setLoadingRequest(true)
             await signUp.create({
+                username: userName,
                 emailAddress: userEmail,
                 password: userPassword,
             })
@@ -96,7 +99,6 @@ export default function Signup() {
                         Verificar
                     </Button>
                 }
-
             </Container>
         )
     }
@@ -113,6 +115,24 @@ export default function Signup() {
             </View>
             <Input placeholder="Nome" onChangeText={setUserName} value={userName} />
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />
+            <View style={{
+                backgroundColor: COLORS.white,
+                boxShadow: CONSTANTS.boxShadow,
+                borderRadius: CONSTANTS.borderRadiusLarge,
+                height: 41.5,
+                justifyContent: "center",
+                overflow: "hidden",
+                width: "100%"
+            }}>
+                <Picker
+                    selectedValue={userType}
+                    onValueChange={(value, index) =>
+                        setUserType(value)
+                    }>
+                    <Picker.Item label="Paciente" value="Paciente" />
+                    <Picker.Item label="Colaborador" value="Colaborador" />
+                </Picker>
+            </View>
             <Input placeholder="Senha" onChangeText={setUserPassword} value={userPassword} secureTextEntry={true} />
             {loadingRequest
                 ?
