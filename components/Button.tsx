@@ -1,17 +1,17 @@
 import { Href, useRouter } from "expo-router";
 import { ReactNode } from "react";
-import { GestureResponderEvent, Pressable, StyleSheet, Text } from "react-native";
+import { GestureResponderEvent, Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native";
 import COLORS from "@/contants/colors";
 import CONSTANTS from "@/contants/constants";
 
-export default function Button({ children, href, onPress}: { children?: ReactNode, href?:Href, onPress?: ((event: GestureResponderEvent) => void) | null | undefined }) {
+export default function Button({ children, styleButton, styleTextButton, href, onPress }: { children?: ReactNode, styleButton?: ViewStyle, styleTextButton?: TextStyle,  href?: Href, onPress?: ((event: GestureResponderEvent) => void) | null | undefined }) {
     const router = useRouter()
     return (
-        <Pressable style={styles.button} onPress={(e) => {
+        <Pressable style={{...styles.button, ...styleButton}} onPress={(e) => {
             onPress ? onPress(e) : {}
             href ? router.push(href) : {}
         }}>
-            <Text style={styles.textButton}>
+            <Text style={{...styles.textButton, ...styleTextButton}}>
                 {children}
             </Text>
         </Pressable>

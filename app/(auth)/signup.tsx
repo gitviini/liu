@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ActivityIndicator } from 'react-native'
 import { useState } from 'react'
 import { useSignUp } from '@clerk/clerk-expo'
 import { Link, useRouter } from 'expo-router'
@@ -13,10 +13,12 @@ export default function Signup() {
     const { isLoaded, signUp, setActive } = useSignUp()
     const router = useRouter()
 
+    const [userName, setUserName] = useState<string>("")
     const [userEmail, setUserEmail] = useState<string>("")
     const [userPassword, setUserPassword] = useState<string>("")
     const [pendingVerification, setPendingVerification] = useState<boolean>(false)
     const [confirmCode, setConfirmCode] = useState<string>("")
+    const [loadingRequest, setLoadingRequest] = useState<boolean>(false)
 
     // Handle submission of sign-up form
     const onSignUpPress = async () => {
@@ -24,6 +26,7 @@ export default function Signup() {
 
         // Start sign-up process using email and password provided
         try {
+            setLoadingRequest(true)
             await signUp.create({
                 emailAddress: userEmail,
                 password: userPassword,
@@ -38,7 +41,10 @@ export default function Signup() {
         } catch (err) {
             // See https://clerk.com/docs/custom-flows/error-handling
             // for more info on error handling
-            console.error(JSON.stringify(err, null, 2))
+            console.log(JSON.stringify(err, null, 2))
+        }
+        finally {
+            setLoadingRequest(false)
         }
     }
 
@@ -47,6 +53,7 @@ export default function Signup() {
         if (!isLoaded) return
 
         try {
+            setLoadingRequest(true)
             // Use the code the user provided to attempt verification
             const signUpAttempt = await signUp.attemptEmailAddressVerification({
                 code: confirmCode,
@@ -60,12 +67,14 @@ export default function Signup() {
             } else {
                 // If the status is not complete, check why. User may need to
                 // complete further steps.
-                console.error(JSON.stringify(signUpAttempt, null, 2))
+                console.log(JSON.stringify(signUpAttempt, null, 2))
             }
         } catch (err) {
             // See https://clerk.com/docs/custom-flows/error-handling
             // for more info on error handling
-            console.error(JSON.stringify(err, null, 2))
+            console.log(JSON.stringify(err, null, 2))
+        } finally {
+            setLoadingRequest(false)
         }
     }
 
@@ -77,9 +86,17 @@ export default function Signup() {
                     onChangeText={setConfirmCode}
                     value={confirmCode}
                 />
-                <Button onPress={onVerifyPress}>
-                    Verify
-                </Button>
+                {loadingRequest
+                    ?
+                    <Button styleButton={{ width: "auto" }}>
+                        <ActivityIndicator size={CONSTANTS.fontLarge} color={COLORS.background} />
+                    </Button>
+                    :
+                    <Button onPress={onVerifyPress}>
+                        Verificar
+                    </Button>
+                }
+
             </Container>
         )
     }
@@ -94,9 +111,17 @@ export default function Signup() {
                     Vem fazer parte 😉
                 </Text>
             </View>
+            <Input placeholder="Nome" onChangeText={setUserName} value={userName} />
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />
             <Input placeholder="Senha" onChangeText={setUserPassword} value={userPassword} secureTextEntry={true} />
-            <Button onPress={onSignUpPress}>Cadastrar</Button>
+            {loadingRequest
+                ?
+                <Button styleButton={{ width: "auto" }}>
+                    <ActivityIndicator size={CONSTANTS.fontLarge} color={COLORS.background} />
+                </Button>
+                :
+                <Button onPress={onSignUpPress}>Entrar</Button>
+            }
             <Text style={stylePattern.link} onPress={() => router.replace("/(auth)/login")}>
                 Já é cadastrado? Entrar.
             </Text>

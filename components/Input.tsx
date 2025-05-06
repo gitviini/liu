@@ -15,12 +15,12 @@ export default function Input({ onChangeText, value, placeholder, maxLength, sec
                     onChangeText={onChangeText}
                     placeholder={placeholder}
                     maxLength={maxLength}
-                    secureTextEntry={visiblePassword}
+                    secureTextEntry={!visiblePassword}
                     value={value}
                 />
                 <Pressable style={styles.visibleToggle}
                     onPress={() => setVisiblePassword(!visiblePassword)}>
-                    <Ionicons name={!visiblePassword ? 'eye' : 'eye-off'} size={CONSTANTS.fontMedium} color={COLORS.foreground} />
+                    <Ionicons name={visiblePassword ? 'eye' : 'eye-off'} size={CONSTANTS.fontMedium} color={COLORS.foreground} />
                 </Pressable>
             </View>
         )
@@ -45,13 +45,13 @@ const styles = StyleSheet.create({
         width: "100%",
         maxWidth: CONSTANTS.maxWidth,
         borderRadius: CONSTANTS.borderRadiusLarge,
-        boxShadow: `0px 5px 12px ${COLORS.shadow}`,
+        boxShadow: CONSTANTS.boxShadow,
     },
     containerSecurityInput: {
         flexDirection: "row",
         width: "100%",
         backgroundColor: COLORS.white,
-        boxShadow: `0px 5px 12px ${COLORS.shadow}`,
+        boxShadow: CONSTANTS.boxShadow,
         justifyContent: "space-between",
         borderRadius: CONSTANTS.borderRadiusLarge,
         overflow: "hidden"

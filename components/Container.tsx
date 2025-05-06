@@ -1,14 +1,14 @@
 import { ReactNode } from "react"
-import { ScrollView, StatusBar, StyleSheet, View, ViewStyle } from "react-native"
+import { ColorValue, ScrollView, StatusBar, StyleSheet, View, ViewStyle } from "react-native"
 import BackButton from '@/components/BackButton'
 import COLORS from "@/contants/colors"
 import CONSTANTS from "@/contants/constants"
 
-export default function Container({ children, style }: { children?: ReactNode, style?: ViewStyle }) {
+export default function Container({ children, style, styleGeralContainer, statusBarBackgroundColor}: { children?: ReactNode, style?: ViewStyle, styleGeralContainer?: ViewStyle, statusBarBackgroundColor?: ColorValue}) {
     return (
-        <View style={styles.geralContainer}>
+        <View style={{...styles.geralContainer, ...styleGeralContainer}}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <StatusBar backgroundColor={COLORS.background} />
+                <StatusBar backgroundColor={statusBarBackgroundColor ? statusBarBackgroundColor : COLORS.background} />
                 <BackButton />
                 <View style={{ ...styles.container, ...style }}>
                     {children}
