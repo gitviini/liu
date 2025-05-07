@@ -62,7 +62,7 @@ export default function Login() {
             </View>
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />
             <Input placeholder="Senha" onChangeText={setUserPassword} value={userPassword} secureTextEntry={true}></Input>
-            <Text style={{ ...stylePattern.link, width: "100%", textAlign: "right" }} onPress={() => router.push("/(auth)/forgout")}>
+            <Text style={{ ...stylePattern.link, width: "100%", maxWidth: CONSTANTS.maxWidth, textAlign: "right" }} onPress={() => router.push("/(auth)/forgout")}>
                 Esqueceu a senha?
             </Text>
             {loadingRequest

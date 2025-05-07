@@ -1,8 +1,10 @@
 import Container from "@/components/Container"
 import { Link } from "expo-router"
+
 import { useEffect, useState } from "react";
-import * as handlerApiRequest from "@/api/apiService"
-import { View, Text } from "react-native";
+import * as handlerApiRequest from "@/api/NotificationService"
+import { View, Text, StyleSheet } from "react-native";
+import NotificationItem from "@/components/NotificationItem";
 
 export default function Home() {
     const [listNotifications, setListNotifications] = useState<Array<any>>([])
@@ -27,13 +29,15 @@ export default function Home() {
             <Link href={"/(public)/profile"}>Perfil</Link>
             {
                 listNotifications.map((item) => (
-                    <View key={item.id}>
-                        <Text>{item.title}</Text>
-                        <Text>{item.description}</Text>
-                        <Text>{item.date.slice(0,10)} - {item.time}</Text>
-                    </View>
+                    <NotificationItem key={item.id} item={item}/>
                 ))
             }
         </Container>
     )
 }
+
+const styles = StyleSheet.create({
+    containerNotification: {
+
+    }
+})

@@ -66,15 +66,10 @@ export default function Profile() {
                     <Text style={stylePattern.subTitle}>
                         Tipo de usuário
                     </Text>
-                    <View style={{
-                            backgroundColor: COLORS.white,
-                            boxShadow: CONSTANTS.boxShadow,
-                            borderRadius: CONSTANTS.borderRadiusLarge,
-                            height: 41.5,
-                            justifyContent: "center",
-                            overflow: "hidden",
-                        }}>
+                    <View style={stylePattern.containerPicker}>
                         <Picker
+                            style={stylePattern.picker}
+                            selectionColor={COLORS.white}                                                        
                             selectedValue={userType}
                             onValueChange={(value, index) =>
                                 setUserType(value)
@@ -121,13 +116,16 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
     geralContainer: {
-        backgroundColor: COLORS.green
+        backgroundColor: COLORS.green,
     },
     container: {
         justifyContent: "flex-start",
         alignItems: "stretch",
+        alignSelf: "center",
         padding: 0,
-        paddingTop: 70
+        paddingTop: 70,
+        width: "100%",
+        maxWidth: CONSTANTS.maxWidth,
     },
     containerProfile: {
         flex: 1,
@@ -142,6 +140,7 @@ const styles = StyleSheet.create({
     },
     containerUserInfo: {
         width: "100%",
+        maxWidth: CONSTANTS.maxWidth,
         gap: CONSTANTS.gapMedium
     },
     containerUserImage: {
@@ -151,10 +150,12 @@ const styles = StyleSheet.create({
     },
     containerConnectedUserList: {
         width: "100%",
+        maxWidth: CONSTANTS.maxWidth,
         gap: CONSTANTS.gapMedium
     },
     containerAccountOptions: {
         width: "100%",
+        maxWidth: CONSTANTS.maxWidth,
         gap: CONSTANTS.gapMedium
     },
     editImage: {

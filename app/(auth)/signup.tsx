@@ -115,16 +115,10 @@ export default function Signup() {
             </View>
             <Input placeholder="Nome" onChangeText={setUserName} value={userName} />
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />
-            <View style={{
-                backgroundColor: COLORS.white,
-                boxShadow: CONSTANTS.boxShadow,
-                borderRadius: CONSTANTS.borderRadiusLarge,
-                height: 41.5,
-                justifyContent: "center",
-                overflow: "hidden",
-                width: "100%"
-            }}>
+            <View style={stylePattern.containerPicker}>
                 <Picker
+                    style={stylePattern.picker}
+                    selectionColor={COLORS.white}
                     selectedValue={userType}
                     onValueChange={(value, index) =>
                         setUserType(value)

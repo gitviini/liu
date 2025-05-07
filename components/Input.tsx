@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     containerSecurityInput: {
         flexDirection: "row",
         width: "100%",
+        maxWidth: CONSTANTS.maxWidth,
         backgroundColor: COLORS.white,
         boxShadow: CONSTANTS.boxShadow,
         justifyContent: "space-between",
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
         borderRadius: CONSTANTS.borderRadiusLarge,
         backgroundColor: COLORS.white,
         outlineColor: "transparent",
+        outlineWidth: 0,
     },
     visibleToggle: { 
         padding: CONSTANTS.paddingMedium, 
