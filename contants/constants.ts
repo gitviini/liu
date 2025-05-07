@@ -13,6 +13,7 @@ const CONSTANTS = {
     paddingSmall: 5,
     borderRadiusTotal: 999,
     borderRadiusLarge: 25,
+    borderRadiusHalfLarge: 20,
     borderRadiusMedium: 10,
     borderRadiusSmall: 5,
     boxShadow: `0px 5px 12px ${COLORS.shadow}`,

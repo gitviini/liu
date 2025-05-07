@@ -7,7 +7,7 @@ import COLORS from "@/contants/colors"
 export default function NotificationItem({ item }: { item: any }) {
     return (
         <View style={styles.contianerNotification}>
-            <Text style={{ ...stylePattern.title, fontWeight: "bold" }}>
+            <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
                 {item.title}
             </Text>
             <Text style={stylePattern.paragraph}>
