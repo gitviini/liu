@@ -2,10 +2,12 @@ import Container from "@/components/Container"
 import { Link } from "expo-router"
 import { Image } from "expo-image";
 import { useEffect, useState } from "react";
-import * as handlerApiRequest from "@/api/NotificationService"
+import * as handlerNotificationRequest from "@/api/NotificationService"
+import * as handlerUserRequest from "@/api/UserService"
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import NotificationItem from "@/components/NotificationItem";
 import HomeLoader from "@/components/Loaders/HomeLoader";
+import { useUser } from "@clerk/clerk-expo";
 import Division from "@/components/Division";
 import COLORS from "@/contants/colors";
 import CONSTANTS from "@/contants/constants";
@@ -14,7 +16,11 @@ import { Ionicons } from "@expo/vector-icons";
 const blurhash = 'L2PQ4}xu#ixu~qt7%MoL,,axwtax'
 
 export default function Home() {
+    const { isSignedIn, user, isLoaded } = useUser();
+
+    const [refreshing, setRefreshing] = useState<boolean>(false)
     const [visibleCode, setVisibleCode] = useState<boolean>(false)
+    const [userCode, setUserCode] = useState<string>("")
     const [visibleNotification, setVisibleNotification] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [listNotifications, setListNotifications] = useState<Array<any>>([])
@@ -23,22 +29,38 @@ export default function Home() {
         fetchData();
     }, []);
 
+
     const fetchData = async () => {
         setIsLoading(true)
 
-        const { data, error } = await handlerApiRequest.getNotifications("gvinicius")
+        const email = user?.emailAddresses[0].emailAddress
 
-        const list = data.content.data
-        console.log(list)
+        const userData = await handlerUserRequest.getUser(email ? email : "")
+        const notificationData = await handlerNotificationRequest.getNotifications("gvinicius")
+
+        
+        if(userData.error.message || notificationData.error.message){
+            return
+        }
+
+        console.log(userData.data.content.data[0].code)
+
+        setUserCode(userData.data.content.data[0].code)
+        const list = notificationData.data.content.data
         setListNotifications(list)
+        setIsLoading(false)
     };
+
+    function onRefresh() {
+        fetchData()
+    }
 
     /* if (isLoading) {
         return <HomeLoader />
     } */
 
     return (
-        <Container statusBarBackgroundColor={COLORS.green} styleGeralContainer={styles.geralContainer} style={styles.container}>
+        <Container statusBarBackgroundColor={COLORS.green} styleGeralContainer={styles.geralContainer} style={styles.container} onRefresh={onRefresh} refreshing={refreshing}>
             <Link href={"/(public)/profile"}>
                 <View style={styles.containerHeader}>
                     <Image
@@ -50,12 +72,12 @@ export default function Home() {
                     />
                     <View style={styles.containerUserInfo}>
                         <Text style={{ ...stylePattern.subTitle, color: COLORS.background, fontWeight: "bold" }}>
-                            Vinicius Gabriel
+                            {user?.firstName}
                         </Text>
                         <Pressable onPress={() => setVisibleCode(!visibleCode)} style={styles.toggleUserCode}>
                             <Ionicons name={visibleCode ? "eye" : "eye-off"} size={CONSTANTS.fontLarge} color={COLORS.background} />
                             <Text style={{ ...stylePattern.subTitle, color: COLORS.background }}>
-                                {visibleCode ? "123345ABC" : "****"}
+                                {visibleCode ? userCode : "********"}
                             </Text>
                         </Pressable>
                     </View>
@@ -63,14 +85,14 @@ export default function Home() {
             </Link>
             <View style={styles.containerHome}>
                 <View style={styles.containerNotification}>
-                    <Pressable style={styles.toggleNotification} onPress={()=>setVisibleNotification(!visibleNotification)}>
+                    <Pressable style={styles.toggleNotification} onPress={() => setVisibleNotification(!visibleNotification)}>
                         <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
                             Cronograma
                         </Text>
                         <Ionicons name={visibleNotification ? "chevron-up-outline" : "chevron-down-outline"} size={CONSTANTS.fontLarge} color={COLORS.foreground} />
                     </Pressable>
                     {
-                        listNotifications.length > 0 && visibleNotification?
+                        listNotifications?.length > 0 && visibleNotification ?
                             listNotifications.map((item) => (
                                 <NotificationItem key={item.id} item={item} />
                             ))

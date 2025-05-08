@@ -1,12 +1,13 @@
-import { useClerk } from '@clerk/clerk-expo'
+import { useClerk, useUser } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 import { View, Text, StyleSheet } from "react-native"
 import { Image } from 'expo-image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { stylePattern } from '@/contants/stylePattern';
 import { ConnectedUserType } from '@/types/ConnectedUserType';
+import * as handlerUserRequest from "@/api/UserService"
 import Container from "@/components/Container";
 import Button from '@/components/Button'
 import CONSTANTS from '@/contants/constants';
@@ -26,9 +27,25 @@ const connectedUserList: Array<ConnectedUserType> = [
 ]
 
 export default function Profile() {
-    const [userName, setUserName] = useState<string>("Vinicius Gabriel")
+    const { isSignedIn, user, isLoaded } = useUser();
+
+    const [userName, setUserName] = useState<string>("...")
     const [userType, setUserType] = useState<string>("Paciente")
-    const [userCode, setUserCode] = useState<string>("123ABCFFF")
+    const [userCode, setUserCode] = useState<string>("...")
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    async function fetchData() {
+        if (!isLoaded) return
+
+        const userData = await handlerUserRequest.getUser(user?.emailAddresses[0].emailAddress || '')
+
+        setUserName(user?.firstName ? user?.firstName : "")
+        setUserType(userData.data?.content.data[0].type)
+        setUserCode(userData.data.content.data[0].code)
+    }
 
     const router = useRouter()
     // Use `useClerk()` to access the `signOut()` function
@@ -44,6 +61,15 @@ export default function Profile() {
             // for more info on error handling
             console.error(JSON.stringify(err, null, 2))
         }
+    }
+
+    async function deleteUser() {
+        const {data, error } = await handlerUserRequest.deleteUser({ code: userCode })
+        if(error.message){
+            console.error(error.content)
+            return
+        }
+        await user?.delete()
     }
     return (
         <Container statusBarBackgroundColor={COLORS.green} styleGeralContainer={styles.geralContainer} style={styles.container}>
@@ -69,7 +95,7 @@ export default function Profile() {
                     <View style={stylePattern.containerPicker}>
                         <Picker
                             style={stylePattern.picker}
-                            selectionColor={COLORS.white}                                                        
+                            selectionColor={COLORS.white}
                             selectedValue={userType}
                             onValueChange={(value, index) =>
                                 setUserType(value)
@@ -81,7 +107,7 @@ export default function Profile() {
                     <Text style={stylePattern.subTitle}>
                         Código de compartilhamento
                     </Text>
-                    <Input onChangeText={setUserCode} value={userCode} />
+                    <Input onChangeText={setUserCode} value={userCode} styleInput={{ textAlign: "left" }} />
                 </View>
                 <Division />
                 <View style={styles.containerConnectedUserList}>
@@ -105,7 +131,7 @@ export default function Profile() {
                     <Button styleButton={styles.logoutAccountButton} styleTextButton={styles.logoutAccountTextButton} onPress={handleSignOut}>
                         Desconectar conta
                     </Button>
-                    <Button styleButton={styles.deleteAccountButton}>
+                    <Button styleButton={styles.deleteAccountButton} onPress={() => deleteUser()}>
                         Deletar conta
                     </Button>
                 </View>

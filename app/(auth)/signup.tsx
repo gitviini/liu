@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSignUp } from '@clerk/clerk-expo'
 import { Link, useRouter } from 'expo-router'
 import { Picker } from '@react-native-picker/picker';
+import * as handlerUserRequest from "@/api/UserService"
 import Container from "@/components/Container"
 import Input from "@/components/Input"
 import Button from "@/components/Button"
@@ -17,6 +18,7 @@ export default function Signup() {
     const [userName, setUserName] = useState<string>("")
     const [userEmail, setUserEmail] = useState<string>("")
     const [userType, setUserType] = useState<string>("Paciente")
+    const [userRegion, setUserRegion] = useState<string>("")
     const [userPassword, setUserPassword] = useState<string>("")
     const [pendingVerification, setPendingVerification] = useState<boolean>(false)
     const [confirmCode, setConfirmCode] = useState<string>("")
@@ -30,10 +32,17 @@ export default function Signup() {
         try {
             setLoadingRequest(true)
             await signUp.create({
-                username: userName,
+                firstName: userName,
                 emailAddress: userEmail,
                 password: userPassword,
             })
+
+            const { data, error } = await handlerUserRequest.postUser({ type: userType, code: userEmail, code_connected: "", region: userRegion})
+            console.log(error.message || data.content)
+
+            if(error.message) return
+
+            console.log(data.content)
 
             // Send user an email with verification code
             await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
@@ -62,16 +71,16 @@ export default function Signup() {
                 code: confirmCode,
             })
 
-            // If verification was completed, set the session to active
-            // and redirect the user
+            await setActive({ session: signUpAttempt.createdSessionId })
+
             if (signUpAttempt.status === 'complete') {
-                await setActive({ session: signUpAttempt.createdSessionId })
                 router.replace('/')
             } else {
                 // If the status is not complete, check why. User may need to
                 // complete further steps.
                 console.log(JSON.stringify(signUpAttempt, null, 2))
             }
+
         } catch (err) {
             // See https://clerk.com/docs/custom-flows/error-handling
             // for more info on error handling
@@ -115,6 +124,7 @@ export default function Signup() {
             </View>
             <Input placeholder="Nome" onChangeText={setUserName} value={userName} />
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />
+            <Input placeholder="Município" onChangeText={setUserRegion} value={userRegion} />
             <View style={stylePattern.containerPicker}>
                 <Picker
                     style={stylePattern.picker}

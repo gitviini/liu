@@ -3,11 +3,20 @@ import ApiResponse from "@/types/ApiResponse"
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || "";
 
+const URL = API_URL+"/notification/"
+
+const CONFIG = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+    }
+  };
+
 async function getNotifications(authorCode: string) {
     const data:ApiResponse = { message: "", code: 200, content: {} }, error:ApiResponse = { message: "", code: 500, content: {} }
     try {
-        console.log(API_URL+"/notification/"+authorCode)
-        const response = await axios.get(API_URL+"/notification/"+authorCode)
+        console.log(URL+authorCode)
+        const response = await axios.get(URL+authorCode, CONFIG)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -24,16 +33,16 @@ async function getNotifications(authorCode: string) {
 
 async function postNotification(
     notificationData = {
-        title: String,
-        description: String,
-        date: String,
-        time: String,
-        occurred: Boolean,
-        author_code: String
+        title: "",
+        description: "",
+        date: "",
+        time: "",
+        occurred: false,
+        author_code: ""
     }) {
         const data:ApiResponse = { message: "", code: 200, content: {} }, error:ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.post(API_URL, notificationData)
+        const response = await axios.post(URL, notificationData, CONFIG)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -60,7 +69,7 @@ async function uploadNotification(
     }) {
         const data:ApiResponse = { message: "", code: 200, content: {} }, error:ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.put(API_URL, notificationData)
+        const response = await axios.put(URL, notificationData, CONFIG)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -82,7 +91,7 @@ async function deleteNotification(
     }) {
         const data:ApiResponse = { message: "", code: 200, content: {} }, error:ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.delete(API_URL, {data: notificationData})
+        const response = await axios.delete(URL+notificationData.author_code, {...CONFIG, data: notificationData})
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
