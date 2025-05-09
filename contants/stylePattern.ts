@@ -42,5 +42,10 @@ export const stylePattern = StyleSheet.create({
 		maxWidth: CONSTANTS.maxWidth - 50,
 		fontSize: CONSTANTS.fontSmall,
 		cursor: "pointer" 
+	},
+	scrollHorizontal: {
+		paddingLeft: 0,
+		padding: CONSTANTS.paddingSmall,
+		paddingBottom: CONSTANTS.paddingLarge
 	}
 })

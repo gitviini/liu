@@ -5,8 +5,9 @@ import { Ionicons } from "@expo/vector-icons"
 import CONSTANTS from "@/contants/constants"
 import COLORS from "@/contants/colors"
 import * as handlerNotificationRequest from "@/api/NotificationService"
+import { reverseString } from "@/utils/parser"
 
-export default function NotificationItem({ item }: { item: any }) {
+export default function NotificationItem({ item, fetchData}: { item: any, fetchData: Function }) {
     const [toggleNotificationOptions, setToggleNotificationOptions] = useState<boolean>(false)
 
     async function handlerDeleteNotification(
@@ -29,10 +30,11 @@ export default function NotificationItem({ item }: { item: any }) {
                     style={styles.deleteNotification}
                     onPress={() => {
                         handlerDeleteNotification(item.id, item.author_code)
+                        fetchData()
                     }}
                 >
                     <Text>
-                        {item.id}
+                        <Ionicons name="trash" size={CONSTANTS.fontLarge} color={COLORS.background}/>
                     </Text>
                 </Pressable>
                 : <></>}
@@ -55,7 +57,7 @@ export default function NotificationItem({ item }: { item: any }) {
                 <View style={styles.containerInfo}>
                     <Ionicons name="calendar" size={CONSTANTS.fontMedium} color={COLORS.foreground} />
                     <Text style={stylePattern.paragraph}>
-                        {item.date.slice(0, 10)}
+                        {reverseString(item.date.slice(0, 10))}
                     </Text>
                 </View>
             </Pressable>
@@ -66,16 +68,19 @@ export default function NotificationItem({ item }: { item: any }) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
+        width: "auto",
+        marginRight: CONSTANTS.paddingMedium
     },
     deleteNotification: {
         backgroundColor: COLORS.red,
         justifyContent: "center",
         alignItems: "center",
-        width: "20%",
-        marginRight: CONSTANTS.paddingMedium
+        width: 100,
+        marginRight: CONSTANTS.paddingMedium,
+        borderRadius: CONSTANTS.borderRadiusMedium
     },
     contianerNotification: {
-        width: "100%",
+        width: "auto",
         maxWidth: CONSTANTS.maxWidth,
         backgroundColor: COLORS.white,
         padding: CONSTANTS.paddingMedium,

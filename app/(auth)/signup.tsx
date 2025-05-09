@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSignUp } from '@clerk/clerk-expo'
 import { Link, useRouter } from 'expo-router'
 import { Picker } from '@react-native-picker/picker';
+import { Image } from 'expo-image';
 import * as handlerUserRequest from "@/api/UserService"
 import Container from "@/components/Container"
 import Input from "@/components/Input"
@@ -51,7 +52,7 @@ export default function Signup() {
             if (error.message) {
                 console.log(error.message ? error.content : data.content)
             }
-            else{
+            else {
                 // Send user an email with verification code
                 await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
                 setPendingVerification(true)
@@ -114,12 +115,12 @@ export default function Signup() {
                     </Button>
                     :
                     <>
-                    <Text style={{...stylePattern.subTitle, textAlign: "center"}}>
-                        Verifique o código enviado para{"\n"}{userEmail}
-                    </Text>
-                    <Button onPress={onVerifyPress}>
-                        Verificar
-                    </Button>
+                        <Text style={{ ...stylePattern.subTitle, textAlign: "center" }}>
+                            Verifique o código enviado para{"\n"}{userEmail}
+                        </Text>
+                        <Button onPress={onVerifyPress}>
+                            Verificar
+                        </Button>
                     </>
                 }
             </Container>
@@ -128,13 +129,20 @@ export default function Signup() {
 
     return (
         <Container>
-            <View style={{ ...stylePattern.containerTitle, alignItems: "center" }}>
-                <Text style={stylePattern.title}>
-                    Seja bem vindo
-                </Text>
-                <Text style={stylePattern.paragraph}>
-                    Vem fazer parte 😉
-                </Text>
+            <View style={{ ...stylePattern.containerTitle,flexDirection: "row", alignItems: "center" }}>
+                <Image
+                    source={require("@/assets/images/favicon.png")}
+                    style={{ width: 100, height: 100 }}
+                    contentFit='contain'
+                />
+                <View>
+                    <Text style={stylePattern.title}>
+                        Seja bem vindo
+                    </Text>
+                    <Text style={stylePattern.paragraph}>
+                        Vem fazer parte
+                    </Text>
+                </View>
             </View>
             <Input placeholder="Nome" onChangeText={setUserName} value={userName} />
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />

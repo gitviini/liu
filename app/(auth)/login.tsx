@@ -8,6 +8,7 @@ import Button from "@/components/Button"
 import { stylePattern } from '@/contants/stylePattern'
 import COLORS from '@/contants/colors'
 import CONSTANTS from '@/contants/constants'
+import { Image } from 'expo-image'
 
 export default function Login() {
     const { signIn, setActive, isLoaded } = useSignIn()
@@ -52,13 +53,19 @@ export default function Login() {
 
     return (
         <Container>
-            <View style={{ ...stylePattern.containerTitle, alignItems: "center" }}>
-                <Text style={stylePattern.title}>
-                    Bem vindo
-                </Text>
-                <Text style={stylePattern.paragraph}>
-                    de volta 😎
-                </Text>
+            <View style={{ ...stylePattern.containerTitle, flexDirection: "row", alignItems: "center"}}>
+                <Image
+                    source={require("@/assets/images/favicon.png")}
+                    style={{ width: 100, height: 100 }}
+                />
+                <View>
+                    <Text style={stylePattern.title}>
+                        Bem vindo
+                    </Text>
+                    <Text style={stylePattern.paragraph}>
+                        de volta
+                    </Text>
+                </View>
             </View>
             <Input placeholder="Email" onChangeText={setUserEmail} value={userEmail} />
             <Input placeholder="Senha" onChangeText={setUserPassword} value={userPassword} secureTextEntry={true}></Input>
