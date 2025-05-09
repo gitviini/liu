@@ -67,7 +67,7 @@ export default function Home() {
     }
 
     return (
-        <Container statusBarBackgroundColor={COLORS.green} styleGeralContainer={{ ...styles.geralContainer }} style={styles.container} onRefresh={onRefresh} refreshing={refreshing}>
+        <Container statusBarBackgroundColor={COLORS.green} styleGeralContainer={styles.geralContainer} style={styles.container} onRefresh={onRefresh} refreshing={refreshing}>
             {visibleNotificationModal
                 ?
                 <NewNotificationModal fetchData={fetchData} author_code={user?.emailAddresses[0].emailAddress} setVisibleModal={setVisibleNoticationModal} />
@@ -85,7 +85,7 @@ export default function Home() {
                     />
                     <View style={styles.containerUserInfo}>
                         <Text style={{ ...stylePattern.title, color: COLORS.background, fontWeight: "bold" }}>
-                            <Text style={{fontWeight: "300"}}>Olá,</Text> {user?.firstName}
+                            <Text style={{ fontWeight: "300" }}>Olá,</Text> {user?.firstName}
                         </Text>
                         <Pressable onPress={() => setVisibleCode(!visibleCode)} style={styles.toggleUserCode}>
                             <Ionicons name={visibleCode ? "eye" : "eye-off"} size={CONSTANTS.fontLarge} color={COLORS.background} />
@@ -97,6 +97,29 @@ export default function Home() {
                 </View>
             </Link>
             <View style={styles.containerHome}>
+                <View style={styles.containerNotification}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: CONSTANTS.gapSmall }}>
+                        <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
+                            Acompanhamento
+                        </Text>
+                        <Division horizontal={true} />
+                        <Text style={stylePattern.subTitle}>
+                            {listNotifications.filter((item) => item.type == "acompanhamento").length}
+                        </Text>
+                    </View>
+                    <ScrollView horizontal={true} style={stylePattern.scrollHorizontal}>
+                        {
+                            listNotifications?.length > 0 ?
+                                listNotifications.map((item) => (
+                                    item.type == "acompanhamento" &&
+                                    <NotificationItem style={{ backgroundColor: COLORS.yellow }} fetchData={fetchData} key={item.id} item={item} />
+                                ))
+                                :
+                                ""
+                        }
+                    </ScrollView>
+                </View>
+                <Division />
                 <View style={styles.containerNotification}>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: CONSTANTS.gapSmall }}>
                         <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
@@ -115,29 +138,6 @@ export default function Home() {
                             listNotifications?.length > 0 ?
                                 listNotifications.map((item) => (
                                     item.type == "autocuidado" &&
-                                    <NotificationItem fetchData={fetchData} key={item.id} item={item} />
-                                ))
-                                :
-                                ""
-                        }
-                    </ScrollView>
-                </View>
-                <Division />
-                <View style={styles.containerNotification}>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: CONSTANTS.gapSmall }}>
-                        <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
-                            Acompanhamento
-                        </Text>
-                        <Division horizontal={true} />
-                        <Text style={stylePattern.subTitle}>
-                            {listNotifications.filter((item) => item.type == "acompanhamento").length}
-                        </Text>
-                    </View>
-                    <ScrollView horizontal={true} style={stylePattern.scrollHorizontal}>
-                        {
-                            listNotifications?.length > 0 ?
-                                listNotifications.map((item) => (
-                                    item.type == "acompanhamento" &&
                                     <NotificationItem fetchData={fetchData} key={item.id} item={item} />
                                 ))
                                 :
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 0,
         justifyContent: "flex-start",
+        paddingBottom: 80
     },
     containerHeader: {
         flexDirection: "row",
@@ -203,8 +204,6 @@ const styles = StyleSheet.create({
         height: "100%",
         padding: CONSTANTS.paddingLarge,
         backgroundColor: COLORS.background,
-        /* borderTopLeftRadius: CONSTANTS.borderRadiusLarge,
-        borderTopRightRadius: CONSTANTS.borderRadiusLarge */
     },
     containerNotification: {
         gap: CONSTANTS.gapMedium,

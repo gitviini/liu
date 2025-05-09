@@ -1,6 +1,6 @@
 import { Href, useRouter } from "expo-router";
 import { ReactNode } from "react";
-import { ActivityIndicator, ColorValue, GestureResponderEvent, Pressable, StyleSheet, Text, TextStyle, ViewStyle } from "react-native";
+import { ActivityIndicator, ColorValue, GestureResponderEvent, TouchableOpacity, StyleSheet, Text, TextStyle, ViewStyle } from "react-native";
 import COLORS from "@/contants/colors";
 import CONSTANTS from "@/contants/constants";
 
@@ -10,18 +10,18 @@ export default function Button({ children, styleButton, styleTextButton, href, o
         <>
             {loading
                 ?
-                <Pressable style={{ ...styles.button, width: "auto" }}>
+                <TouchableOpacity style={{ ...styles.button, width: "auto" }}>
                     <ActivityIndicator size={CONSTANTS.fontLarge} color={activityColor || COLORS.background} />
-                </Pressable>
+                </TouchableOpacity>
                 :
-                <Pressable style={{ ...styles.button, ...styleButton }} onPress={(e) => {
+                <TouchableOpacity style={{ ...styles.button, ...styleButton }} onPress={(e) => {
                     onPress ? onPress(e) : {}
                     href ? router.push(href) : {}
                 }}>
                     <Text style={{ ...styles.textButton, ...styleTextButton }}>
                         {children}
                     </Text>
-                </Pressable>
+                </TouchableOpacity>
             }
         </>
     )

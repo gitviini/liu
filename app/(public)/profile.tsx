@@ -234,8 +234,9 @@ const styles = StyleSheet.create({
         padding: CONSTANTS.paddingLarge,
         paddingTop: 70,
         gap: CONSTANTS.gapLarge,
-        borderTopLeftRadius: CONSTANTS.borderRadiusLarge,
-        borderTopRightRadius: CONSTANTS.borderRadiusLarge
+        /* borderTopLeftRadius: CONSTANTS.borderRadiusLarge,
+        borderTopRightRadius: CONSTANTS.borderRadiusLarge, */
+        paddingBottom: 100
     },
     containerUserInfo: {
         width: "100%",
