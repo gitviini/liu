@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         padding: CONSTANTS.paddingMedium,
         backgroundColor: COLORS.white,
         borderRadius: CONSTANTS.borderRadiusMedium,
-        boxShadow: `0px 5px 12px ${COLORS.shadow}`,
+        boxShadow: CONSTANTS.boxShadow,
         zIndex: 99,
     },
 })

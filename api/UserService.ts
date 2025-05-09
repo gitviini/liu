@@ -12,6 +12,27 @@ const CONFIG = {
     }
 };
 
+async function getUserByNeighborhood(
+    code: string,
+    neighborhood: string
+){
+    const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
+    try {
+        const response = await axios.get(URL + code, CONFIG)
+        data.message = response.data?.message
+        data.content = response.data?.content
+        data.code = response.data?.code
+    }
+    catch (e: any) {
+        error.message = e?.message
+        error.content = e
+        error.code = e?.code
+    }
+    finally {
+        return { data, error }
+    }
+}
+
 async function getUser(
     code: string
 ) {
@@ -37,7 +58,9 @@ async function postUser(
         type: "",
         code: "",
         code_connected: "",
-        region: "",
+        cep: "",
+        dcnt: "",
+        neighborhood: "",
     }) {
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
@@ -61,11 +84,13 @@ async function uploadUser(
         code: "",
         type: "",
         code_connected: "",
-        region: "",
+        cep: "",
+        dcnt: "",
+        neighborhood: "",
     }) {
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.put(URL, userData, CONFIG)
+        const response = await axios.put(URL+userData.code, userData, CONFIG)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
