@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react"
-import { View, Text, StyleSheet, Pressable, StatusBar, TextInput } from "react-native"
+import { View, Text, StyleSheet, Pressable, StatusBar, TextInput, useWindowDimensions } from "react-native"
 import Input from "./Input"
 import Button from "./Button"
 import COLORS from "@/contants/colors"
@@ -11,6 +11,7 @@ import { postNotification } from "@/api/NotificationService"
 import { reverseString } from "@/utils/parser"
 
 export default function NewNotificationModal({ children, setVisibleModal, author_code, fetchData }: { children?: ReactNode, setVisibleModal: Dispatch<SetStateAction<boolean>>, author_code?: string, fetchData: Function}) {
+    const userDimensions = useWindowDimensions()
     const [notificationTitle, setNotificationTitle] = useState<string>("")
     const [notificationDescription, setNotificationDescription] = useState<string>("")
     const [notificationDate, setNotificationDate] = useState<string>("")
@@ -42,12 +43,12 @@ export default function NewNotificationModal({ children, setVisibleModal, author
             setVisibleModal(false)
             fetchData()
         }
-
+        
         SetNewNotificationLoading(false)
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container, width: userDimensions.width, height: userDimensions.height}}>
             <StatusBar backgroundColor={COLORS.background} />
             <Pressable style={styles.closeButton} onPress={() => setVisibleModal(false)}>
                 <Ionicons name="close" size={CONSTANTS.fontMedium} color={COLORS.foreground} />
@@ -77,12 +78,13 @@ export default function NewNotificationModal({ children, setVisibleModal, author
 
 const styles = StyleSheet.create({
     container: {
-        position: "fixed",
+        position: "absolute",
         width: "100%",
         height: "100%",
+        paddingTop: CONSTANTS.paddingLarge + 10,
         padding: CONSTANTS.paddingLarge,
         backgroundColor: COLORS.background,
-        zIndex: 99
+        zIndex: 9999,
     },
     closeButton: {
         padding: CONSTANTS.paddingMedium,

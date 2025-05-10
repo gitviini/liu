@@ -5,7 +5,8 @@ import WebView from "react-native-webview";
 import { useEffect, useState } from "react";
 import * as handlerNotificationRequest from "@/api/NotificationService"
 import * as handlerUserRequest from "@/api/UserService"
-import { View, Text, StyleSheet, Pressable, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import NotificationItem from "@/components/NotificationItem";
 import HomeLoader from "@/components/Loaders/HomeLoader";
 import { useUser } from "@clerk/clerk-expo";
 import Division from "@/components/Division";
@@ -13,31 +14,52 @@ import COLORS from "@/contants/colors";
 import CONSTANTS from "@/contants/constants";
 import { stylePattern } from "@/contants/stylePattern";
 import { Ionicons } from "@expo/vector-icons";
+import NewNotificationModal from "@/components/NewNotificationModal";
 import Button from "@/components/Button";
 import notificationHandler from "@/services/NotificationService";
 import hyperLinks from "@/contants/hyperLinks";
-import User from "@/components/User";
-import UserItem from "@/components/UserItem";
 import Input from "@/components/Input";
 const blurhash = 'L2PQ4}xu#ixu~qt7%MoL,,axwtax'
 
-export default function Home() {
+export default function Colaborador({userCode}:{userCode?:string}) {
     const { isSignedIn, user, isLoaded } = useUser();
 
+    const [afericao, setAfericao] = useState<string>("12/8")
+    const [showAfericao, setShowAfericao] = useState<boolean>(false)
+    const [commentAfericao, setCommentAfericao] = useState<string>("Pressão normal")
+    const [userType, setUserType] = useState<string>("")
+    const [userInfo, setUserInfo] = useState<any>("")
     const [refreshing, setRefreshing] = useState<boolean>(false)
     const [visibleCode, setVisibleCode] = useState<boolean>(false)
-    const [userCode, setUserCode] = useState<string>("")
-    const [userType, setUserType] = useState<string>("")
-    const [userNeighborhood, setUserNeighborhood] = useState<string>("")
     const [visibleNotificationModal, setVisibleNoticationModal] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [listUsers, setListUsers] = useState<Array<any>>([])
+    const [listNotifications, setListNotifications] = useState<Array<any>>([])
     const [webview, setWebView] = useState<boolean>(false)
     const [uriWeb, setUriWeb] = useState<string>("")
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    const feedBackAfericao = () => {
+        let result: Array<string> = afericao.split("/")
+        let tratament = result.map((item) => (Number(item)))
+
+        if (tratament[0] <= 9 && tratament[1] <= 6) {
+            setCommentAfericao("Pressão baixa\nVerifique sua glicose")
+        }
+        else if (tratament[0] <= 12 && tratament[1] <= 8) {
+            setCommentAfericao("Pressão normal\nContiue assim")
+        }
+        else if (tratament[0] <= 13.9 && tratament[1] <= 8.9) {
+            setCommentAfericao("Pressão um pouco alta\nVerifique a medicação")
+        }
+        else {
+            setCommentAfericao("Pressão alta\nProcure um médico")
+        }
+        console.log(tratament)
+    }
+
 
     const fetchData = async () => {
         setIsLoading(true)
@@ -46,16 +68,17 @@ export default function Home() {
 
         const userData = await handlerUserRequest.getUser(email || "")
         const notificationData = await handlerNotificationRequest.getNotifications(email || "")
-        const users = await handlerUserRequest.getUserByNeighborhood(userData.data.content.data[0].neighborhood)
+
+
         if (userData.error.message || notificationData.error.message) {
             return
         }
 
-        setUserCode(userData.data.content.data[0].code)
+        setUserInfo(userData.data.content.data[0])
+        console.log(userData.data.content.data[0].code)
         setUserType(userData.data.content.data[0].type)
-        setUserNeighborhood(userData.data.content.data[0].neighborhood)
-
-        setListUsers(users.data.content.data)
+        const list = notificationData.data.content.data
+        setListNotifications(list)
         setIsLoading(false)
     };
 
@@ -67,128 +90,129 @@ export default function Home() {
         return <HomeLoader />
     }
 
-    if (userType == "Paciente") {
-        return <User />
-    }
-
     return (
         <>
+            {visibleNotificationModal
+                ?
+                <NewNotificationModal fetchData={fetchData} author_code={user?.emailAddresses[0].emailAddress} setVisibleModal={setVisibleNoticationModal} />
+                :
+                <></>
+            }
             <Container statusBarBackgroundColor={COLORS.green} styleGeralContainer={styles.geralContainer} style={styles.container} onRefresh={onRefresh} refreshing={refreshing}>
                 <Link href={"/(public)/profile"}>
                     <View style={styles.containerHeader}>
                         <Image
                             placeholder={{ blurhash }}
                             style={styles.userImage}
-                            source={"https://upload.wikimedia.org/wikipedia/commons/0/0e/Doutor_Franscisco_%28Tratadas_FULL%29_%286%29_copiar.jpg"}
+                            source={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUVhBj0u9z6lQbhAWuzoiJpU7Jgf6Vmq2qvg&s"}
                             contentFit='cover'
                             transition={1000}
                         />
                         <View style={styles.containerUserInfo}>
                             <Text style={{ ...stylePattern.title, color: COLORS.background, fontWeight: "bold" }}>
-                                <Text style={{ fontWeight: "300" }}>Doutor,</Text> {user?.firstName}
+                                <Text style={{ fontWeight: "300" }}>Acompanhando</Text>{"\n" + user?.firstName}
                             </Text>
-                            <Pressable onPress={() => setVisibleCode(!visibleCode)} style={styles.toggleUserCode}>
-                                <Ionicons name={visibleCode ? "eye" : "eye-off"} size={CONSTANTS.fontLarge} color={COLORS.background} />
-                                <Text style={{ ...stylePattern.subTitle, color: COLORS.background }}>
-                                    {visibleCode ? userCode : "********"}
-                                </Text>
-                            </Pressable>
+                            <Text style={{ ...stylePattern.paragraph, color: COLORS.background }}>
+                                ~ {userInfo.dcnt}
+                            </Text>
                         </View>
                     </View>
                 </Link>
                 <View style={styles.containerHome}>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: CONSTANTS.gapSmall }}>
-                        <Ionicons name="location-outline" size={CONSTANTS.fontLarge} />
-                        <Text style={stylePattern.subTitle}>{userNeighborhood}</Text>
-                    </View>
-                    <Division />
                     <View style={styles.containerNotification}>
-                        <Text style={stylePattern.subTitle}>
-                            Consultar dados do paciente
-                        </Text>
-                        <Input placeholder="#Código" />
-                        <Text style={stylePattern.subTitle}>
-                            Filtros <Ionicons name="chevron-down" />
-                        </Text>
-                        <Input placeholder="Bairro" />
-                        <Input placeholder="Situação (Vermelho, Amarelo, Verde)" />
-                        <Input placeholder="Tipo (Diabético e/ou Hipertenso)" />
-                        <Button>Pesquisar</Button>
+                        <View style={{
+                            width: "100%",
+                            alignSelf: "stretch",
+                            backgroundColor: COLORS.white,
+                            borderRadius: CONSTANTS.borderRadiusLarge,
+                            boxShadow: CONSTANTS.boxShadow,
+                            padding: CONSTANTS.paddingMedium,
+                            gap: CONSTANTS.gapMedium,
+                            marginBottom: CONSTANTS.paddingMedium,
+                        }}>
+                            <Text style={{ ...stylePattern.paragraph, borderRadius: CONSTANTS.borderRadiusHalfLarge, color: COLORS.foreground, textAlign: "center", padding: CONSTANTS.paddingMedium, backgroundColor: COLORS.lightGreen }}>
+                                <Text style={{ fontWeight: "bold" }}>{afericao}</Text> mmHg
+                            </Text>
+                            <Text style={{ ...stylePattern.paragraph, textAlign: "center" }}>{commentAfericao}</Text>
+
+                            {showAfericao &&
+                                <Input placeholder="Quanto está sua pressão?" onChangeText={setAfericao} value={afericao} />
+                            }
+
+                            <View style={{ flexDirection: "row", gap: CONSTANTS.gapMedium }}>
+                                {!showAfericao &&
+                                    <>
+                                        <Button onPress={() => {
+                                            setShowAfericao(true)
+                                            showAfericao && feedBackAfericao()
+                                        }} styleButton={{ flex: 1 }}>
+                                            Aferir
+                                        </Button>
+                                        <Button onPress={() => {
+                                        }} styleButton={{ flex: 1 }}>
+                                            Ver aferições
+                                        </Button>
+                                    </>
+                                }
+                                {showAfericao &&
+                                    <>
+                                        <Button onPress={() => {
+                                            feedBackAfericao()
+                                        }} styleButton={{ flex: 1 }}>
+                                            Enviar
+                                        </Button>
+                                        <Button onPress={() => setShowAfericao(false)} styleButton={{ backgroundColor: COLORS.red, flex: 1 }}>
+                                            Cancelar
+                                        </Button>
+                                    </>
+                                }
+                            </View>
+                        </View>
                     </View>
                     <Division />
                     <View style={styles.containerNotification}>
                         <View style={{ flexDirection: "row", alignItems: "center", gap: CONSTANTS.gapSmall }}>
                             <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
-                                Pacientes
+                                Acompanhamento
                             </Text>
                             <Division horizontal={true} />
                             <Text style={stylePattern.subTitle}>
-                                {listUsers.length}
+                                {listNotifications.filter((item) => item.type == "acompanhamento").length}
                             </Text>
                         </View>
+                        <Button>Novo lembrete</Button>
                         <ScrollView horizontal={true} style={stylePattern.scrollHorizontal}>
                             {
-                                listUsers?.length > 0 ?
-                                    listUsers.map((item) => (
-                                        item.state == "vermelho" &&
-                                        <Link href={{
-                                            pathname: "/(public)/modal",
-                                            params: {
-                                                type: userType,
-                                                userCode: item.code,
-                                            }
-                                        }}
-                                            asChild
-                                            key={item.id}
-                                        >
-                                            <TouchableOpacity>
-                                                <UserItem item={item} />
-                                            </TouchableOpacity>
-                                        </Link>
+                                listNotifications?.length > 0 ?
+                                    listNotifications.map((item) => (
+                                        item.type == "acompanhamento" &&
+                                        <NotificationItem style={{ backgroundColor: COLORS.yellow }} fetchData={fetchData} key={item.id} item={item} />
                                     ))
                                     :
                                     ""
                             }
+                        </ScrollView>
+                    </View>
+                    <Division />
+                    <View style={styles.containerNotification}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: CONSTANTS.gapSmall }}>
+                            <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
+                                Autocuidado
+                            </Text>
+                            <Division horizontal={true} />
+                            <Text style={stylePattern.subTitle}>
+                                {listNotifications.filter((item) => item.type == "autocuidado").length}
+                            </Text>
+                        </View>
+                        <Button onPress={() => setVisibleNoticationModal(true)}>
+                            Criar nova notificação
+                        </Button>
+                        <ScrollView horizontal={true} style={stylePattern.scrollHorizontal}>
                             {
-                                listUsers?.length > 0 ?
-                                    listUsers.map((item) => (
-                                        item.state == "amarelo" &&
-                                        <Link href={{
-                                            pathname: "/(public)/modal",
-                                            params: {
-                                                type: userType,
-                                                userCode: item.code,
-                                            }
-                                        }}
-                                            asChild
-                                            key={item.id}
-                                        >
-                                            <TouchableOpacity>
-                                                <UserItem item={item} />
-                                            </TouchableOpacity>
-                                        </Link>
-                                    ))
-                                    :
-                                    ""
-                            }
-                            {
-                                listUsers?.length > 0 ?
-                                    listUsers.map((item) => (
-                                        item.state == "verde" &&
-                                        <Link href={{
-                                            pathname: "/(public)/modal",
-                                            params: {
-                                                type: userType,
-                                                userCode: item.code,
-                                            }
-                                        }}
-                                            asChild
-                                            key={item.id}
-                                        >
-                                            <TouchableOpacity>
-                                                <UserItem item={item} />
-                                            </TouchableOpacity>
-                                        </Link>
+                                listNotifications?.length > 0 ?
+                                    listNotifications.map((item) => (
+                                        item.type == "autocuidado" &&
+                                        <NotificationItem fetchData={fetchData} key={item.id} item={item} />
                                     ))
                                     :
                                     ""
@@ -198,7 +222,7 @@ export default function Home() {
                     <Division />
                     <View style={styles.containerNotification}>
                         <Text style={{ ...stylePattern.subTitle, fontWeight: "bold" }}>
-                            Eventos e Conectando-se
+                            Plataformas auxiliares
                         </Text>
                         <View style={styles.containerhyperLinkEvents}>
                             {hyperLinks.map((item) => (
@@ -221,7 +245,7 @@ export default function Home() {
                         </View>
                     </View>
                     <Division />
-                    <Button onPress={() => notificationHandler({ title: "Aviso", body: "Paciente (Hugo) está com pressão de 14/8 mmHg" })}>
+                    <Button onPress={() => notificationHandler({ title: "olá", body: "Oi" })}>
                         Noticação
                     </Button>
                 </View>

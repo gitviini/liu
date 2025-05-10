@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         cursor: "pointer",
     },
     textButton: {
-        fontWeight: "bold",
+        fontFamily: "Poppins",
+        
         fontSize: CONSTANTS.fontMedium,
         color: COLORS.white
     }

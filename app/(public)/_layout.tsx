@@ -16,14 +16,6 @@ export default function RootLayout() {
         tabBarIcon: ({ color }) => <Ionicons size={28} name="home-outline" color={color} />
       }}
     />
-    {/* <Tabs.Screen
-      name="report"
-      options={{
-        title: "Relatório",
-        tabBarActiveTintColor: COLORS.green,
-        tabBarInactiveTintColor: COLORS.gray,
-        tabBarIcon: ({ color }) => <Ionicons size={28} name="document-outline" color={color} />
-      }} /> */}
     <Tabs.Screen
       name="profile"
       options={{
@@ -32,5 +24,6 @@ export default function RootLayout() {
         tabBarInactiveTintColor: COLORS.gray,
         tabBarIcon: ({ color }) => <Ionicons size={28} name="person-outline" color={color} />
       }} />
+      <Tabs.Screen name="modal" options={{headerShown: false, href:null}}/>
   </Tabs>
 }

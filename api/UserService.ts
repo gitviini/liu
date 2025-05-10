@@ -5,20 +5,13 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL || "";
 
 const URL = API_URL + "/user/"
 
-const CONFIG = {
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-    }
-};
-
 async function getUserByNeighborhood(
-    code: string,
     neighborhood: string
 ){
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.get(URL + code, CONFIG)
+        console.log(neighborhood)
+        const response = await axios.get(API_URL+"/users/"+neighborhood)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -38,7 +31,7 @@ async function getUser(
 ) {
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.get(URL + code, CONFIG)
+        const response = await axios.get(URL + code)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -64,7 +57,7 @@ async function postUser(
     }) {
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.post(URL+userData.code, userData, CONFIG)
+        const response = await axios.post(URL+userData.code, userData)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -90,7 +83,7 @@ async function uploadUser(
     }) {
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.put(URL+userData.code, userData, CONFIG)
+        const response = await axios.put(URL+userData.code, userData)
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -111,7 +104,7 @@ async function deleteUser(
     }) {
     const data: ApiResponse = { message: "", code: 200, content: {} }, error: ApiResponse = { message: "", code: 500, content: {} }
     try {
-        const response = await axios.delete(URL+userData.code, { ...CONFIG, data: userData })
+        const response = await axios.delete(URL+userData.code, { data: userData })
         data.message = response.data?.message
         data.content = response.data?.content
         data.code = response.data?.code
@@ -126,4 +119,4 @@ async function deleteUser(
     }
 }
 
-export { getUser, postUser, uploadUser, deleteUser }
+export { getUserByNeighborhood, getUser, postUser, uploadUser, deleteUser }

@@ -102,7 +102,7 @@ export default function Signup() {
 
     if (pendingVerification) {
         return (
-            <Container>
+            <Container styleGeralContainer={{ backgroundColor: COLORS.lightGreen }}>
                 <Input
                     placeholder="Coloque o código de confirmação"
                     onChangeText={setConfirmCode}
@@ -128,8 +128,8 @@ export default function Signup() {
     }
 
     return (
-        <Container>
-            <View style={{ ...stylePattern.containerTitle,flexDirection: "row", alignItems: "center" }}>
+        <Container styleGeralContainer={{ backgroundColor: COLORS.lightGreen }}>
+            <View style={{ ...stylePattern.containerTitle, flexDirection: "row", alignItems: "center" }}>
                 <Image
                     source={require("@/assets/images/favicon.png")}
                     style={{ width: 100, height: 100 }}
@@ -158,7 +158,8 @@ export default function Signup() {
                     }>
                     <Picker.Item label="Paciente" value="Paciente" />
                     <Picker.Item label="Colaborador" value="Colaborador" />
-                    <Picker.Item label="Profissional" value="Profissional" />
+                    <Picker.Item label="eMulti" value="eMulti" />
+
                 </Picker>
             </View>
             {userType == "Paciente" ?

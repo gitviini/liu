@@ -105,7 +105,7 @@ export default function Profile() {
                     <Image
                         placeholder={{ blurhash }}
                         style={styles.userImage}
-                        source={"https://picsum.photos/id/103/100/100"}
+                        source={"https://i.pinimg.com/736x/52/f3/5c/52f35c5a5821ace2727920417334eea0.jpg"}
                         contentFit='cover'
                         transition={1000}
                     />
@@ -129,17 +129,26 @@ export default function Profile() {
                             }>
                             <Picker.Item label="Paciente" value="Paciente" />
                             <Picker.Item label="Colaborador" value="Colaborador" />
-                            <Picker.Item label="Profissional" value="Profissional" />
+                            <Picker.Item label="eMulti" value="eMulti" />
 
                         </Picker>
                     </View>
                     {userType == "Paciente"
                         ?
                         <>
-                            <Text style={stylePattern.subTitle}>
-                                DCNT
-                            </Text>
-                            <Input onChangeText={setUserDCNT} value={userDCNT} styleInput={{ textAlign: "left" }} />
+                            <View style={stylePattern.containerPicker}>
+                                <Picker
+                                    style={stylePattern.picker}
+                                    selectionColor={COLORS.white}
+                                    selectedValue={userDCNT}
+                                    onValueChange={(value, index) =>
+                                        setUserDCNT(value)
+                                    }>
+                                    <Picker.Item label="Hipertensão" value="Hipertensão" />
+                                    <Picker.Item label="Diabetes" value="Diabetes" />
+                                    <Picker.Item label="Diabetes e hipertensão" value="Diabetes e hipertensão" />
+                                </Picker>
+                            </View>
                         </>
                         :
                         <></>
@@ -164,12 +173,12 @@ export default function Profile() {
                     </Text>
                     {
                         connectedUsersList.length > 0
-                        ?
-                        connectedUsersList.map(
-                            (item) => <ConnectedUserItem key={item.id} item={item} />
-                        )
-                        :
-                        <Text style={stylePattern.paragraph}>Nenhum usuário conectado</Text>
+                            ?
+                            connectedUsersList.map(
+                                (item) => <ConnectedUserItem key={item.id} item={item} />
+                            )
+                            :
+                            <Text style={stylePattern.paragraph}>Nenhum usuário conectado</Text>
                     }
                     <Button>
                         Conectar-se
@@ -236,7 +245,6 @@ const styles = StyleSheet.create({
         gap: CONSTANTS.gapLarge,
         /* borderTopLeftRadius: CONSTANTS.borderRadiusLarge,
         borderTopRightRadius: CONSTANTS.borderRadiusLarge, */
-        paddingBottom: 100
     },
     containerUserInfo: {
         width: "100%",

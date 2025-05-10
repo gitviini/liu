@@ -52,14 +52,14 @@ export default function Login() {
 
 
     return (
-        <Container>
+        <Container styleGeralContainer={{backgroundColor: COLORS.lightGreen}}>
             <View style={{ ...stylePattern.containerTitle, flexDirection: "row", alignItems: "center"}}>
                 <Image
                     source={require("@/assets/images/favicon.png")}
                     style={{ width: 100, height: 100 }}
                 />
                 <View>
-                    <Text style={stylePattern.title}>
+                    <Text style={{...stylePattern.title}}>
                         Bem vindo
                     </Text>
                     <Text style={stylePattern.paragraph}>
