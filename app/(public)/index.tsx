@@ -202,20 +202,27 @@ export default function Home() {
                         </Text>
                         <View style={styles.containerhyperLinkEvents}>
                             {hyperLinks.map((item) => (
-                                <Pressable
+                                <Link
+                                    href={{
+                                        pathname: "/(public)/web",
+                                        params: {uri: item.uri},
+                                    }}
+                                    asChild
                                     key={item.id}
-                                    style={styles.hyperLinkEvents}
-                                    onPress={() => setUriWeb(item.uri)}
                                 >
-                                    <Image
-                                        contentFit="contain"
-                                        style={styles.hyperLinksImage}
-                                        source={item.image}
-                                    />
-                                    <Text style={stylePattern.subTitle}>
-                                        {item.name}
-                                    </Text>
-                                </Pressable>
+                                    <TouchableOpacity
+                                        style={styles.hyperLinkEvents}
+                                    >
+                                        <Image
+                                            contentFit="contain"
+                                            style={styles.hyperLinksImage}
+                                            source={item.image}
+                                        />
+                                        <Text style={stylePattern.subTitle}>
+                                            {item.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </Link>
                             ))
                             }
                         </View>

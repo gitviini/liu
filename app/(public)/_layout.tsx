@@ -25,5 +25,6 @@ export default function RootLayout() {
         tabBarIcon: ({ color }) => <Ionicons size={28} name="person-outline" color={color} />
       }} />
       <Tabs.Screen name="modal" options={{headerShown: false, href:null}}/>
+      <Tabs.Screen name="web" options={{headerShown: false, href:null}}/>
   </Tabs>
 }
