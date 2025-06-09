@@ -9,7 +9,7 @@ import Button from "@/components/Button";
 import Constants from "@/constants/Constants";
 import Pagination from "@/components/Pagination";
 
-const carousel: Array<{id: string, src: ImageSource, description: string}> = [
+const carousel: Array<{ id: string, src: ImageSource, description: string }> = [
   {
     id: "0",
     src: require("../assets/images/init-carrossel/alarm.svg"),
@@ -45,7 +45,13 @@ export default function Index() {
           onViewableItemsChanged={(viewableItem) => setIndexPagination(viewableItem.viewableItems[0].key)}
           data={carousel}
           renderItem={({ item }) => (
-            <View key={item?.id} style={{ padding: 30, width: widthScreen }}>
+            <View
+              key={item?.id}
+              style={{
+                padding: 30,
+                width: widthScreen
+              }}
+            >
               <Image
                 source={item?.src}
                 style={styles.image}
@@ -60,10 +66,10 @@ export default function Index() {
         <Pagination items={carousel} index={indexPagination} />
       </View>
       <View style={styles.containerButton}>
-        <Button>
+        <Button href={"/(auth)/login"}>
           <Text style={stylePattern.paragraph}>Entrar</Text>
         </Button>
-        <Button>
+        <Button href={"/(auth)/signup"}>
           <Text style={stylePattern.paragraph}>Cadastrar</Text>
         </Button>
       </View>

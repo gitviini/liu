@@ -2,10 +2,18 @@ import { Pressable, ViewStyle, StyleSheet } from "react-native"
 import Colors from "@/constants/Colors"
 import Constants from "@/constants/Constants"
 import { ReactNode } from "react"
-
-export default function Button({ style, children }: { style?: ViewStyle, children?: ReactNode }) {
+import { useRouter, Href } from "expo-router";
+export default function Button({ style, children, href }: { style?: ViewStyle, children?: ReactNode, href?: Href }) {
+    const router = useRouter()
     return (
-        <Pressable style={{ ...styles.button, ...style }}>
+        <Pressable
+            style={{ ...styles.button, ...style }}
+            onPress={() => {
+                if (href) {
+                    router.push(href)
+                }
+            }}
+        >
             {children}
         </Pressable>
     )
