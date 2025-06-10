@@ -69,8 +69,8 @@ export default function Index() {
         <Button href={"/(auth)/login"}>
           <Text style={stylePattern.paragraph}>Entrar</Text>
         </Button>
-        <Button href={"/(auth)/signup"}>
-          <Text style={stylePattern.paragraph}>Cadastrar</Text>
+        <Button href={"/(auth)/signup"} style={{backgroundColor: Colors.light.foreground}}>
+          <Text style={{...stylePattern.paragraph, color: Colors.light.background}}>Cadastrar</Text>
         </Button>
       </View>
     </Container>
