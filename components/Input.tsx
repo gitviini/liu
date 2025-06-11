@@ -12,7 +12,6 @@ export default function Input({ value, onChangeText, placeholder }: { value?: an
             style={{
                 ...stylePattern.paragraph,
                 width: "100%",
-                height: Constants.componentsHeight,
                 padding: Constants.paddingHigh,
                 backgroundColor: Colors.light.white,
                 borderRadius: Constants.borderRadiusHigh,

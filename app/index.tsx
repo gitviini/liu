@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Text, View, FlatList, StyleSheet } from "react-native";
 import Colors from "@/constants/Colors";
 import { Image, ImageSource } from "expo-image";
@@ -29,7 +29,8 @@ const carousel: Array<{ id: string, src: ImageSource, description: string }> = [
 
 export default function Index() {
   const [indexPagination, setIndexPagination] = useState<String>(carousel[0].id)
-  let widthScreen = Dimensions.get("screen").width
+  const widthScreen = Dimensions.get("screen").width
+
   return (
     <Container style={{
       justifyContent: "center",
@@ -69,8 +70,8 @@ export default function Index() {
         <Button href={"/(auth)/login"}>
           <Text style={stylePattern.paragraph}>Entrar</Text>
         </Button>
-        <Button href={"/(auth)/signup"} style={{backgroundColor: Colors.light.foreground}}>
-          <Text style={{...stylePattern.paragraph, color: Colors.light.background}}>Cadastrar</Text>
+        <Button href={"/(auth)/signup"} style={{ backgroundColor: Colors.light.foreground }}>
+          <Text style={{ ...stylePattern.paragraph, color: Colors.light.background }}>Cadastrar</Text>
         </Button>
       </View>
     </Container>

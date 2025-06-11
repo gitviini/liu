@@ -1,6 +1,5 @@
 import Colors from "./Colors"
 const Constants = {
-    componentsHeight: 60,
     paddingSmall: 5,
     paddingMedium: 10,
     paddingHigh: 20,

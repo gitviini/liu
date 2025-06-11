@@ -2,15 +2,15 @@ import { StyleSheet } from "react-native"
 
 export const stylePattern = StyleSheet.create({
     title: {
-        fontSize: 30,
+        fontSize: 28,
         fontFamily: "Nunito"
     },
     subtitle: {
-        fontSize: 22,
+        fontSize: 20,
         fontFamily: "Nunito"
     },
     paragraph: {
-        fontSize: 18,
+        fontSize: 16,
         fontFamily: "Nunito",
     }
 })

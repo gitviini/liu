@@ -5,11 +5,13 @@ import Input from "@/components/Input"
 import Constants from "@/constants/Constants"
 import { Link } from "expo-router"
 import { stylePattern } from "@/constants/stylePattern"
+import BackButton from "@/components/BackButton"
 
 
 export default function Login() {
     return (
         <Container style={styles.container}>
+            <BackButton href={"/"}/>
             <View style={styles.containerTitle}>
                 <Text style={stylePattern.title}>Bem vindo</Text>
                 <Text style={stylePattern.paragraph}>Vem fazer parte 😉</Text>
@@ -24,7 +26,7 @@ export default function Login() {
                     Enviar
                 </Text>
             </Button>
-            <Link href={"/(auth)/login"}>
+            <Link href={"/(auth)/login"} replace>
                 <Text style={stylePattern.paragraph}>
                     Já é cadastrado? Entrar
                 </Text>
