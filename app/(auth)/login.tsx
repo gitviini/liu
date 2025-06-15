@@ -25,7 +25,7 @@ export default function Login() {
                     Esqueceu a senha?
                 </Text>
             </Link>
-            <Button>
+            <Button href={"/(pages)/dashBoard"}>
                 <Text style={stylePattern.paragraph}>
                     Enviar
                 </Text>
