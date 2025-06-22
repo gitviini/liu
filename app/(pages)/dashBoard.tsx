@@ -4,6 +4,7 @@ import Colors from "@/constants/Colors"
 import Constants from "@/constants/Constants"
 import { stylePattern } from "@/constants/stylePattern"
 import { getDate, getCurrentDate } from "@/utils/Date"
+import * as Lucide from 'lucide-react-native';
 import { Ionicons } from "@expo/vector-icons"
 import { Image } from "expo-image"
 import { useRef, useState } from "react"
@@ -76,7 +77,7 @@ export default function DashBoard() {
             <Card
                 header={<>
                     <Text style={stylePattern.paragraph}>Aferição</Text>
-                    <Ionicons name="heart" style={stylePattern.subtitle} color={Colors.light.red} />
+                    <Lucide.Heart size={stylePattern.subtitle.fontSize} color={Colors.light.red} />
                 </>}
             >
                 <Text style={stylePattern.paragraph}>
@@ -88,7 +89,7 @@ export default function DashBoard() {
                     style={styles.cardHorizontal}
                     header={<>
                         <Text style={stylePattern.paragraph}>Visita</Text>
-                        <Ionicons name="home" style={stylePattern.subtitle} color={Colors.light.blue} />
+                        <Lucide.Home size={stylePattern.subtitle.fontSize} color={Colors.light.blue} />
                     </>}
                 >
                     <Text style={stylePattern.paragraph}>
@@ -102,7 +103,7 @@ export default function DashBoard() {
                     style={styles.cardHorizontal}
                     header={<>
                         <Text style={stylePattern.paragraph}>Exercício</Text>
-                        <Ionicons name="barbell" style={stylePattern.subtitle} color={Colors.light.green} />
+                        <Lucide.Dumbbell size={stylePattern.subtitle.fontSize} color={Colors.light.green} />
                     </>}
                 >
                     <Text style={stylePattern.paragraph}>
