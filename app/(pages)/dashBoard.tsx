@@ -5,7 +5,6 @@ import Constants from "@/constants/Constants"
 import { stylePattern } from "@/constants/stylePattern"
 import { getDate, getCurrentDate } from "@/utils/Date"
 import * as Lucide from 'lucide-react-native';
-import { Ionicons } from "@expo/vector-icons"
 import { Image } from "expo-image"
 import { useRef, useState } from "react"
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"
@@ -45,6 +44,11 @@ export default function DashBoard() {
                     contentContainerStyle={styles.containerDays}
                     onScrollToIndexFailed={() => { }}
                     data={date.days}
+                    onScrollEndDrag={() => {
+                        setTimeout(() => {
+                            scrollToIndex(currentDate.day - 4)
+                        }, 500)
+                    }}
                     onContentSizeChange={() => {
                         setTimeout(() => {
                             scrollToIndex(currentDate.day - 4)
@@ -150,10 +154,10 @@ const styles = StyleSheet.create({
         borderRadius: Constants.borderRadiusHigh,
     },
     containerCard: {
-        flexDirection: "row", 
-        width: "100%", 
-        justifyContent: "space-between", 
-        alignItems: "flex-start", 
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
         gap: Constants.gapHigh
     },
     cardHorizontal: {

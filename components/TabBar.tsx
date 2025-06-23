@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
         boxShadow: Constants.boxShadow,
     },
     tabItem: {
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
         padding: Constants.paddingMedium,
