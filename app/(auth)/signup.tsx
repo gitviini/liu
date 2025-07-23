@@ -18,8 +18,8 @@ export default function Login() {
             </View>
             <View style={styles.containerInput}>
                 <Input placeholder="CPF" />
-                <Input placeholder="Senha" />
-                <Input placeholder="Confirmar senha" />
+                <Input placeholder="Senha" secureTextEntry/>
+                <Input placeholder="Confirmar senha" secureTextEntry/>
             </View>
             <Button>
                 <Text style={stylePattern.paragraph}>

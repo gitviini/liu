@@ -12,9 +12,9 @@ export default function Layout() {
             screenOptions={{headerShown: false}}
             tabBar={(props) => <CustomTabBar {...props} />}
         >
-            <Tab.Screen name="Início" component={DashBoard} options={{tabBarActiveTintColor: Colors.light.blue, tabBarInactiveTintColor: Colors.light.foreground}}/>
-            <Tab.Screen name="Relatório" component={Report} options={{tabBarActiveTintColor: Colors.light.red, tabBarInactiveTintColor: Colors.light.foreground}}/>
-            <Tab.Screen name="Perfil" component={Profile} options={{tabBarActiveTintColor: Colors.light.green, tabBarInactiveTintColor: Colors.light.foreground}}/>
+            <Tab.Screen name="dashBoard" component={DashBoard} options={{tabBarLabel:"Início", tabBarActiveTintColor: Colors.light.blue, tabBarInactiveTintColor: Colors.light.foreground}}/>
+            <Tab.Screen name="report" component={Report} options={{tabBarLabel:"Relatório", tabBarActiveTintColor: Colors.light.red, tabBarInactiveTintColor: Colors.light.foreground}}/>
+            <Tab.Screen name="profile" component={Profile} options={{tabBarLabel:"Perfil", tabBarActiveTintColor: Colors.light.green, tabBarInactiveTintColor: Colors.light.foreground}}/>
         </Tab.Navigator>
     );
 }

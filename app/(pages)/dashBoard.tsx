@@ -7,7 +7,8 @@ import { getDate, getCurrentDate } from "@/utils/Date"
 import * as Lucide from 'lucide-react-native';
 import { Image } from "expo-image"
 import { useRef, useState } from "react"
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, FlatList } from "react-native"
+import { Link } from "expo-router"
 
 export default function DashBoard() {
     const flatListRef = useRef<any>(null)
@@ -28,11 +29,13 @@ export default function DashBoard() {
                 <Text style={stylePattern.title}>
                     Olá, {userName} 👋
                 </Text>
-                <Image
-                    style={styles.imageProfile}
-                    contentFit="cover"
-                    source={"https://images.pexels.com/photos/3789888/pexels-photo-3789888.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
-                />
+                <Link href={"/(pages)/profile"}>
+                    <Image
+                        style={styles.imageProfile}
+                        contentFit="cover"
+                        source={"https://images.pexels.com/photos/3789888/pexels-photo-3789888.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
+                    />
+                </Link>
             </View>
             <View style={stylePattern.card}>
                 <Text style={stylePattern.title}>

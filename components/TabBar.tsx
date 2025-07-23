@@ -11,9 +11,9 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
     const screen = Dimensions.get("screen")
 
     const Icons: any = {
-        "Início": (props: { color: ColorValue, size: number }) => <Lucide.Home color={props.color} size={props.size} />,
-        "Relatório": (props: { color: ColorValue, size: number }) => <Lucide.LayoutDashboard color={props.color} size={props.size} />,
-        "Perfil": (props: { color: ColorValue, size: number }) => <Lucide.User color={props.color} size={props.size} />,
+        "dashBoard": (props: { color: ColorValue, size: number }) => <Lucide.Home color={props.color} size={props.size} />,
+        "report": (props: { color: ColorValue, size: number }) => <Lucide.LayoutDashboard color={props.color} size={props.size} />,
+        "profile": (props: { color: ColorValue, size: number }) => <Lucide.User color={props.color} size={props.size} />,
     }
 
     return (

@@ -18,7 +18,7 @@ export default function Login() {
             </View>
             <View style={styles.containerInput}>
                 <Input placeholder="CPF" />
-                <Input placeholder="Senha" />
+                <Input placeholder="Senha" secureTextEntry/>
             </View>
             <Link href={"/"} style={styles.containerForgoutPassword}>
                 <Text style={stylePattern.paragraph}>

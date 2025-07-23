@@ -10,6 +10,7 @@ const Constants = {
     borderRadiusSmall: 5,
     borderRadiusMedium: 10,
     borderRadiusHigh: 20,
+    borderRadiusAll: 999,
     boxShadow: "0 5px 20px #0001"
 }
 
